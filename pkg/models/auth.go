@@ -9,13 +9,14 @@ import (
 
 type AuthClaims struct {
 	jwt.StandardClaims
-	Id          int64  `json:"id"`
-	Username    string `json:"username"`
-	LoginType   int    `json:"loginType"`
-	Expire      int64  `json:"expire"`
-	Role        int    `json:"role"`
-	Createdt    int64  `json:"createdt"`
-	LastLogindt int64  `json:"lastLogindt"`
+	Id        int64  `json:"id"`
+	Username  string `json:"username"`
+	FullName  string `json:"fullName"`
+	LoginType int    `json:"loginType"`
+	Expire    int64  `json:"expire"`
+	Role      int    `json:"role"`
+	CreatedAt int64  `json:"createdAt"`
+	LastLogin int64  `json:"lastLogin"`
 }
 
 type UserInfo struct {

@@ -16,13 +16,14 @@ type JWTWrapper struct {
 
 func (w *JWTWrapper) CreateAuthClaimSession(loginUser *models.User) (string, *models.AuthClaims, error) {
 	authClaims := models.AuthClaims{
-		Id:          loginUser.Id,
-		Username:    loginUser.Username,
-		LoginType:   loginUser.LoginType,
-		Expire:      time.Now().Add(time.Hour * time.Duration(w.ExpirationHours)).Unix(),
-		Role:        loginUser.Role,
-		Createdt:    loginUser.Createdt,
-		LastLogindt: loginUser.LastLogindt,
+		Id:        loginUser.Id,
+		Username:  loginUser.Username,
+		FullName:  loginUser.FullName,
+		LoginType: loginUser.LoginType,
+		Expire:    time.Now().Add(time.Hour * time.Duration(w.ExpirationHours)).Unix(),
+		Role:      loginUser.Role,
+		CreatedAt: loginUser.CreatedAt,
+		LastLogin: loginUser.LastLogin,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Local().Add(time.Hour * time.Duration(w.ExpirationHours)).Unix(),
 			Issuer:    w.Issuer,

@@ -152,7 +152,7 @@ func (s *Server) FinishUpdatePasskey(ctx context.Context, reqData *pb.FinishUpda
 	}
 	tx := s.H.DB.Begin()
 	updateUser.CredsArrJson = user.GetUserCredsJson()
-	updateUser.Updatedt = time.Now().Unix()
+	updateUser.UpdatedAt = time.Now().Unix()
 	err2 := tx.Save(updateUser).Error
 	if err2 != nil {
 		tx.Rollback()
@@ -211,11 +211,11 @@ func (s *Server) FinishRegistration(ctx context.Context, reqData *pb.SessionKeyA
 		LoginType:    int(utils.LoginWithPasskey),
 		Status:       int(utils.StatusActive),
 		Role:         int(utils.RoleRegular),
-		Createdt:     time.Now().Unix(),
+		CreatedAt:    time.Now().Unix(),
 		CredsArrJson: user.GetUserCredsJson(),
 	}
-	insertUser.Updatedt = insertUser.Createdt
-	insertUser.LastLogindt = insertUser.Createdt
+	insertUser.UpdatedAt = insertUser.CreatedAt
+	insertUser.LastLogin = insertUser.CreatedAt
 
 	err2 := tx.Create(&insertUser).Error
 	if err2 != nil {
@@ -309,8 +309,8 @@ func (s *Server) AssertionResult(ctx context.Context, reqData *pb.SessionKeyAndH
 	loginUser.CredsArrJson = passkeyUser.GetUserCredsJson()
 	//update loginUser
 	tx := s.H.DB.Begin()
-	loginUser.Updatedt = time.Now().Unix()
-	loginUser.LastLogindt = loginUser.Updatedt
+	loginUser.UpdatedAt = time.Now().Unix()
+	loginUser.LastLogin = loginUser.UpdatedAt
 	updateErr := tx.Save(loginUser).Error
 	if updateErr != nil {
 		tx.Rollback()
@@ -442,7 +442,7 @@ func (s *Server) ChangeUsernameFinish(ctx context.Context, reqData *pb.ChangeUse
 
 	oldUser.Username = userKey
 	oldUser.CredsArrJson = user.GetUserCredsJson()
-	oldUser.Updatedt = time.Now().Unix()
+	oldUser.UpdatedAt = time.Now().Unix()
 	updateErr := tx.Save(oldUser).Error
 	if updateErr != nil {
 		tx.Rollback()

@@ -96,7 +96,7 @@ func (s *Server) ChangeUserStatus(ctx context.Context, reqData *pb.ChangeUserSta
 
 	tx := s.H.DB.Begin()
 	user.Status = int(activeFlg)
-	user.Updatedt = time.Now().Unix()
+	user.UpdatedAt = time.Now().Unix()
 	//update user
 	updateErr := tx.Save(&user).Error
 	if updateErr != nil {
@@ -183,7 +183,7 @@ func (s *Server) UpdatePassword(ctx context.Context, reqData *pb.WithPasswordReq
 		return ResponseLoginError(authClaims.Username, "Hash password failed. Please try again!", utils.GetFuncName(), hashErr)
 	}
 	user.Password = hashPassword
-	user.Updatedt = time.Now().Unix()
+	user.UpdatedAt = time.Now().Unix()
 	tx := s.H.DB.Begin()
 	//update user
 	updateErr := tx.Save(&user).Error
@@ -217,9 +217,9 @@ func (s *Server) RegisterByPassword(ctx context.Context, reqData *pb.WithPasswor
 	user.Status = int(utils.StatusActive)
 	user.Role = int(utils.RoleRegular)
 	user.LoginType = int(utils.LoginWithPassword)
-	user.Createdt = time.Now().Unix()
-	user.Updatedt = user.Createdt
-	user.LastLogindt = user.Createdt
+	user.CreatedAt = time.Now().Unix()
+	user.UpdatedAt = user.CreatedAt
+	user.LastLogin = user.CreatedAt
 	tx := s.H.DB.Begin()
 	err2 := tx.Create(&user).Error
 	if err2 != nil {
@@ -263,7 +263,7 @@ func (s *Server) UpdateUsername(ctx context.Context, reqData *pb.WithPasswordReq
 		return ResponseLoginError(authClaims.Username, "Get user from DB error. Please try again!", utils.GetFuncName(), err)
 	}
 	user.Username = newUsername
-	user.Updatedt = time.Now().Unix()
+	user.UpdatedAt = time.Now().Unix()
 	tx := s.H.DB.Begin()
 	//update user
 	updateErr := tx.Save(&user).Error
